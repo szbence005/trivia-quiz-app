@@ -1,8 +1,7 @@
 .question {
   width: min(700px, 90%);
-  margin: 80px auto;
+  margin: 60px auto;
   padding: 40px;
-  box-sizing: border-box;
 
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -16,7 +15,10 @@
   text-align: center;
 }
 
-/* Get Questions gomb */
+/* =========================
+   GET QUESTIONS
+   ========================= */
+
 .question > button:first-child {
   padding: 12px 24px;
 
@@ -26,8 +28,8 @@
   background: white;
   color: #0b1b3a;
 
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 
   cursor: pointer;
 
@@ -38,69 +40,187 @@
 
 .question > button:first-child:hover {
   transform: translateY(-2px);
+
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* Kérdés */
+/* =========================
+   QUESTION
+   ========================= */
+
 .question h2 {
   margin: 40px 0 30px;
 
   color: white;
 
   font-size: 28px;
-  line-height: 1.35;
+  line-height: 1.4;
   font-weight: 600;
 }
 
-/* Válaszgombok */
-.question > button:not(:first-child) {
+/* =========================
+   ANSWERS
+   ========================= */
+
+.question .answer {
   display: block;
 
   width: 100%;
   min-height: 60px;
 
-  margin-bottom: 14px;
+  margin: 12px 0;
   padding: 16px 20px;
-
-  box-sizing: border-box;
 
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   color: white;
 
   font-size: 16px;
   font-weight: 500;
 
+  text-align: left;
+
   cursor: pointer;
 
   transition:
     background 0.2s ease,
+    border-color 0.2s ease,
     transform 0.2s ease,
-    border-color 0.2s ease;
+    box-shadow 0.2s ease;
 }
 
-.question > button:not(:first-child):hover {
-  background: rgba(255, 255, 255, 0.15);
+.question .answer:hover {
+  background: rgba(255, 255, 255, 0.13);
   border-color: rgba(255, 255, 255, 0.25);
 
   transform: translateY(-2px);
 }
 
-/* Mobil */
+/* Kijelölt válasz */
+
+.question .answer.selected {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: white;
+
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 8px 25px rgba(0, 0, 0, 0.2);
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   ALSÓ GOMBOK
+   ========================= */
+
+.question > div {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.question > div button {
+  flex: 1;
+
+  padding: 14px 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.question > div button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================
+   NEXT QUESTION
+   ========================= */
+
+.question > div button:first-child {
+  background: white;
+  color: #0b1b3a;
+  border-color: white;
+}
+
+.question > div button:first-child:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+/* Letiltott Next Question */
+
+.question > div button:disabled {
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================
+   GIVE UP
+   ========================= */
+
+.question > div button:last-child {
+  background: rgba(255, 70, 70, 0.08);
+  border-color: rgba(255, 100, 100, 0.2);
+}
+
+.question > div button:last-child:hover {
+  background: rgba(255, 70, 70, 0.16);
+  border-color: rgba(255, 120, 120, 0.35);
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
 @media (max-width: 600px) {
   .question {
-    width: 92%;
-    padding: 25px;
-    margin: 40px auto;
+    width: 90%;
+    margin: 30px auto;
+    padding: 25px 20px;
   }
 
   .question h2 {
+    margin: 30px 0 25px;
     font-size: 22px;
   }
 
-  .question > button:not(:first-child) {
+  .question .answer {
     min-height: 55px;
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .question > div {
+    flex-direction: column;
+  }
+
+  .question > div button {
+    width: 100%;
   }
 }
