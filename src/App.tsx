@@ -18,6 +18,7 @@ function App() {
       />
 
       <Question
+        score={score}
         setScore={setScore}
         currentQuestion={currentQuestion}
         setCurrentQuestion={setCurrentQuestion}
