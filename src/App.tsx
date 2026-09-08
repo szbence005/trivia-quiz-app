@@ -11,12 +11,6 @@ function App() {
   return (
     <>
       <Header />
-
-      <Score
-        score={score}
-        currentQuestion={currentQuestion}
-      />
-
       <Question
         score={score}
         setScore={setScore}

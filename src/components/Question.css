@@ -213,6 +213,100 @@
 
 
 /* =========================
+   CORRECT / INCORRECT FEEDBACK
+   ========================= */
+
+.question .answer.correct {
+  background: rgba(76, 217, 100, 0.18);
+
+  border-color: rgba(76, 217, 100, 0.9);
+
+  box-shadow:
+    0 0 0 2px rgba(76, 217, 100, 0.2),
+    0 8px 20px rgba(0, 0, 0, 0.2);
+
+  animation: correctPop 0.4s ease both;
+}
+
+.question .answer.correct:hover {
+  background: rgba(76, 217, 100, 0.18);
+
+  transform: none;
+}
+
+.question .answer.incorrect {
+  background: rgba(255, 90, 90, 0.18);
+
+  border-color: rgba(255, 90, 90, 0.9);
+
+  box-shadow:
+    0 0 0 2px rgba(255, 90, 90, 0.2),
+    0 8px 20px rgba(0, 0, 0, 0.2);
+
+  animation: incorrectShake 0.45s ease both;
+}
+
+.question .answer.incorrect:hover {
+  background: rgba(255, 90, 90, 0.18);
+
+  transform: none;
+}
+
+.question .answer.disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+.question .answer.disabled:hover {
+  background: transparent;
+
+  border-color: rgba(255, 255, 255, 0.15);
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+@keyframes correctPop {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.035);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes incorrectShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+
+/* =========================
    BOTTOM BUTTONS
    ========================= */
 
@@ -481,6 +575,8 @@
   .question,
   .question h2,
   .question .answer,
+  .question .answer.correct,
+  .question .answer.incorrect,
   .question-buttons,
   .result,
   .score {

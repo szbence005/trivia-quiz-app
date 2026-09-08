@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getQuestions } from "../services/triviaApi";
 import { createQuestion } from "../services/quiz";
 import type { TriviaQuestion } from "../services/quiz";
+import Score from "./Score";
 
 type QuestionProps = {
   setScore: React.Dispatch<React.SetStateAction<number>>;
@@ -20,6 +21,7 @@ function Question({
   const [answers, setAnswers] = useState<string[]>([]);
   const [questions, setQuestions] = useState<TriviaQuestion[]>([]);
   const [lastAnswer, setLastAnswer] = useState<string | null>(null);
+  const [answered, setAnswered] = useState(false);
 
   async function handleQuestion() {
     const data = await getQuestions();
@@ -31,6 +33,7 @@ function Question({
       setCurrentQuestion(0);
       setScore(0);
       setLastAnswer(null);
+      setAnswered(false);
       setAnswers(shuffleAnswers(questionObjects[0]));
     }
   }
@@ -48,14 +51,13 @@ function Question({
       return;
     }
 
-    handleAnswer(lastAnswer);
-
     const nextQuestionIndex = currentQuestion + 1;
 
     if (nextQuestionIndex < questions.length) {
       setCurrentQuestion(nextQuestionIndex);
       setAnswers(shuffleAnswers(questions[nextQuestionIndex]));
       setLastAnswer(null);
+      setAnswered(false);
     } else {
       // Elfogytak a kérdések
       setCurrentQuestion(questions.length);
@@ -63,7 +65,14 @@ function Question({
   }
 
   function setMark(answer: string) {
+    // Miután válaszoltunk, a kérdés lezárul, nem lehet módosítani
+    if (answered) {
+      return;
+    }
+
     setLastAnswer(answer);
+    setAnswered(true);
+    handleAnswer(answer);
   }
 
   function shuffleAnswers(question: TriviaQuestion) {
@@ -79,6 +88,26 @@ function Question({
     }
 
     return answers;
+  }
+
+  function answerClassName(answer: string) {
+    if (!answered) {
+      return "answer";
+    }
+
+    const question = questions[currentQuestion];
+    const isCorrectAnswer = answer === question.correct_answer;
+    const isPickedAnswer = answer === lastAnswer;
+
+    if (isCorrectAnswer) {
+      return "answer correct";
+    }
+
+    if (isPickedAnswer) {
+      return "answer incorrect";
+    }
+
+    return "answer disabled";
   }
 
   // Még nincs kérdés
@@ -120,13 +149,14 @@ function Question({
 
   return (
     <div className="question">
-      <button onClick={handleQuestion}>
-        Get Questions
-      </button>
-
       <div className="progress">
         Question {currentQuestion + 1} / {questions.length}
       </div>
+
+      <Score
+        score={score}
+        currentQuestion={answered ? currentQuestion + 1 : currentQuestion}
+      />
 
       <h2>{question.question}</h2>
 
@@ -134,14 +164,11 @@ function Question({
         {answers.map((answer, index) => (
           <button
             key={index}
-            className={
-              answer === lastAnswer
-                ? "answer selected"
-                : "answer"
-            }
+            className={answerClassName(answer)}
             style={{
               animationDelay: `${index * 0.07}s`,
             }}
+            disabled={answered}
             onClick={() => setMark(answer)}
           >
             {answer}
