@@ -1,7 +1,6 @@
 import "./App.css";
 import Header from "./components/Header";
 import Question from "./components/Question";
-import Score from "./components/Score";
 import { useState } from "react";
 
 function App() {
