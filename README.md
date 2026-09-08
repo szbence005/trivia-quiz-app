@@ -1,75 +1,52 @@
-# React + TypeScript + Vite
+# YoQuiz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A trivia quiz app built with React, TypeScript and Vite. Questions are pulled live from the [Open Trivia Database](https://opentdb.com/).
 
-Currently, two official plugins are available:
+Live: https://trivia-quiz-app-sage.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What it does
 
-## React Compiler
+- Fetches 10 multiple-choice questions per round from Open Trivia DB
+- Shows correct/incorrect feedback as soon as you pick an answer
+- Keeps a running scoreboard: correct, wrong, accuracy
+- Lets you give up mid-round and see your results, or start over with a fresh set of questions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the ESLint configuration
+React 19, TypeScript, Vite. No backend, no API key — the trivia API is called directly from the browser.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Running it locally
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/szbence005/trivia-quiz-app.git
+cd trivia-quiz-app
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Opens on http://localhost:5173 by default.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Other scripts:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build    # type-check + production build (outputs to dist/)
+npm run preview  # preview the production build locally
+npm run lint
+```
 
+## Structure
+
+```
+src/
+├── assets/
+├── components/
+│   ├── Header.tsx
+│   ├── Question.tsx   # fetching questions, answering, results screen
+│   ├── Answers.tsx
+│   └── Score.tsx       # scoreboard
+├── services/
+│   ├── triviaApi.ts   # calls the Open Trivia DB API
+│   └── quiz.ts        # types + HTML entity decoding
+├── App.tsx
+└── main.tsx
 ```
