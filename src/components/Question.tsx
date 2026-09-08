@@ -22,6 +22,8 @@ function Question({
   const [questions, setQuestions] = useState<TriviaQuestion[]>([]);
   const [lastAnswer, setLastAnswer] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
+  const [gaveUp, setGaveUp] = useState(false);
+  const [questionsFacedOnGiveUp, setQuestionsFacedOnGiveUp] = useState(0);
 
   async function handleQuestion() {
     const data = await getQuestions();
@@ -34,6 +36,8 @@ function Question({
       setScore(0);
       setLastAnswer(null);
       setAnswered(false);
+      setGaveUp(false);
+      setQuestionsFacedOnGiveUp(0);
       setAnswers(shuffleAnswers(questionObjects[0]));
     }
   }
@@ -90,6 +94,12 @@ function Question({
     return answers;
   }
 
+  function giveUp() {
+    setGaveUp(true);
+    setQuestionsFacedOnGiveUp(currentQuestion + (answered ? 1 : 0));
+    setCurrentQuestion(questions.length);
+  }
+
   function answerClassName(answer: string) {
     if (!answered) {
       return "answer";
@@ -121,21 +131,24 @@ function Question({
     );
   }
 
-  // Vége a kvíznek
+  // Vége a kvíznek (végigjátszva vagy feladva)
   if (currentQuestion >= questions.length) {
+    const questionsFaced = gaveUp ? questionsFacedOnGiveUp : questions.length;
+
     return (
       <div className="question result">
-        <h1>Quiz finished! 🎉</h1>
+        <h1>{gaveUp ? "Quiz ended 🏳️" : "Quiz finished! 🎉"}</h1>
 
         <h2>Your score</h2>
 
         <div className="score">
-          {score} / {questions.length}
+          {score} / {questionsFaced}
         </div>
 
         <p>
           You answered {score} question
-          {score !== 1 ? "s" : ""} correctly.
+          {score !== 1 ? "s" : ""} correctly
+          {gaveUp ? ` out of ${questionsFaced} attempted` : ""}.
         </p>
 
         <button onClick={handleQuestion}>
@@ -184,7 +197,7 @@ function Question({
           Next question
         </button>
 
-        <button>
+        <button onClick={giveUp}>
           Give up
         </button>
       </div>
